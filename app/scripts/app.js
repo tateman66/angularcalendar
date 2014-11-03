@@ -10,10 +10,7 @@
  */
 angular
   .module('angularcalendarApp', [
-    'ngAnimate',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
+    'ngRoute'
   ])
   .config(function ($routeProvider) {
     $routeProvider
