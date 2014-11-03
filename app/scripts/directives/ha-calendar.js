@@ -7,9 +7,14 @@
  * # haCalendar
  */
 angular.module('angularcalendarApp')
-  .directive('haCalendar', function () {
+  .directive('haCalendar', function (dateUtils) {
     return {
-      template: '<div>Calendar Directive</div>',
-      restrict: 'E'
+      templateUrl: 'views/ha-calendar.html',
+      restrict: 'E',
+      link: function(scope){
+
+        scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
+        scope.weeks = dateUtils.getVisibleWeeks(new Date());
+      }
     };
   });
