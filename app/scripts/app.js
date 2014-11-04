@@ -8,8 +8,7 @@
  *
  * Main module of the application.
  */
-angular
-  .module('angularcalendarApp', ['ngRoute'])
+angular.module('angularcalendarApp', ['ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
