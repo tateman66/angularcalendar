@@ -29,6 +29,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      less: {
+        files: ['<%= yeoman.app %>/styles/*.less'],
+        tasks: ['less']
+      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -63,12 +67,20 @@ module.exports = function (grunt) {
       }
     },
 
+    less: {
+      dist: {
+        files: {
+          '<%= yeoman.app %>/styles/calendar.css': '<%= yeoman.app %>/styles/calendar.less'
+        }
+      }
+    },
+
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9001,
+        port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
+        hostname: 'localhost',
         livereload: 35729
       },
       livereload: {
@@ -388,6 +400,7 @@ module.exports = function (grunt) {
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
+    'less',
     'autoprefixer',
     'concat',
     'ngAnnotate',

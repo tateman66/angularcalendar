@@ -1,0 +1,29 @@
+.calendarWrap {
+  width: 100%;
+  text-align: center;
+}
+.calendarWrap ha-calendar {
+  display: inline-block;
+  width: 100%;
+}
+.calendarWrap ha-calendar ol {
+  white-space: nowrap;
+}
+.calendarWrap ha-calendar > table {
+  width: 100%;
+  font-size: 12px;
+}
+.calendarWrap ha-calendar thead {
+  color: #a6a9ab;
+}
+.calendarWrap ha-calendar th,
+.calendarWrap ha-calendar td {
+  width: 14.2857%;
+  text-align: center;
+}
+.calendarWrap ha-calendar td {
+  padding: 14px;
+  border: 1px solid #e0e0db;
+  color: #b83292;
+  font-weight: bold;
+}

@@ -9,12 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('angularcalendarApp', [
-    'ngAnimate',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
-  ])
+  .module('angularcalendarApp', ['ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
