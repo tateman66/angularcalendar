@@ -3,11 +3,11 @@
     <table>
       <thead>
       <tr>
-        <th bindonce ng-repeat="day in weekdays" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
+        <th bindonce ng-repeat="day in weekdays track by $index" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
       </tr>
       </thead>
       <tbody>
-      <tr bindonce ng-repeat="week in month.weeks">
+      <tr bindonce ng-repeat="week in month.weeks track by $index">
         <td bindonce ng-repeat="day in week track by $index">
           <span bo-text="day.getDate()"></span>
         </td>

@@ -1,13 +1,18 @@
-'use strict';
+/* globals performance */
+(function (angular) {
 
-/**
- * @ngdoc directive
- * @name angularcalendarApp.directive:performanceStats
- * @description
- * # performanceStats
- */
-angular.module('angularcalendarApp')
-  .directive('performanceStats', [
+  'use strict';
+
+  var _el;
+  function _setText(id, text) {
+    if (_el[id]) {
+      _el[id].textContent = text;
+    }
+  }
+
+  var module = angular.module('performanceStatsModule', []);
+
+  module.directive('performanceStats', [
     '$log',
     '$window',
     '$document',
@@ -27,34 +32,94 @@ angular.module('angularcalendarApp')
 
       stats.timeToAngular = (ngStart - stats.headStart);
 
+      var _countScopesWatchers = function () {
+        // This logic is borrowed from $digest(). Keep it in sync!
+        var next, current, target = $rootScope;
+        var scopes = 0,
+          watchers = 0;
+
+        current = target;
+        do {
+          scopes += 1;
+
+          if (current.$$watchers) {
+            watchers += current.$$watchers.length;
+          }
+
+          // Insanity Warning: scope depth-first traversal
+          // yes, this code is a bit crazy, but it works and we have tests to prove it!
+          // this piece should be kept in sync with the traversal in $broadcast
+          if (!(next = (current.$$childHead || (current !== target && current.$$nextSibling)))) {
+            while(current !== target && !(next = current.$$nextSibling)) {
+              current = current.$parent;
+            }
+          }
+        } while ((current = next));
+
+        return [scopes, watchers];
+      };
+
       return {
         restrict: 'AE',
         replace: true,
-        templateUrl: 'views/performance-stats.html',
+        templateUrl: '/views/performance-stats.html',
         link: function (/* scope, elem, attrs */) {
+          // Cache DOM elements
+          _el = {
+            '#scopes':         $document[0].querySelector('#scopes'),
+            '#watchers':       $document[0].querySelector('#watchers'),
+            '#dirty-checks':   $document[0].querySelector('#dirty-checks'),
+            '#digest-cycles':  $document[0].querySelector('#digest-cycles'),
+            '#digest-ms':      $document[0].querySelector('#digest-ms'),
+            '#digest-fps':     $document[0].querySelector('#digest-fps'),
+            '#avg-digest-ms':  $document[0].querySelector('#avg-digest-ms'),
+            '#avg-digest-fps': $document[0].querySelector('#avg-digest-fps'),
+            '#max-digest-ms':  $document[0].querySelector('#max-digest-ms'),
+            '#max-digest-fps': $document[0].querySelector('#max-digest-fps'),
+
+            '#head-load':      $document[0].querySelector('#head-load'),
+            '#body-load':      $document[0].querySelector('#body-load'),
+            '#footer-load':    $document[0].querySelector('#footer-load'),
+            '#vendor-load':    $document[0].querySelector('#vendor-load'),
+            '#app-load':       $document[0].querySelector('#app-load'),
+            '#time-to-eop':    $document[0].querySelector('#time-to-eop'),
+            '#time-to-ng':     $document[0].querySelector('#time-to-ng')
+          };
+
+          _setText('#head-load', stats.headLoad.toFixed(1));
+          _setText('#body-load', stats.bodyLoad.toFixed(1));
+          _setText('#footer-load', stats.footerLoad.toFixed(1));
+          _setText('#vendor-load', stats.vendorScriptLoad.toFixed(1));
+          _setText('#app-load', stats.appLoad.toFixed(1));
+          _setText('#time-to-eop', stats.TTLB.toFixed(1));
+          _setText('#time-to-ng', stats.timeToAngular.toFixed(1));
 
           // If the browser doesn't support Web Performance API
           // (I'm looking at you, Safari), don't even try.
           if (performance != null) {
             var digestCycles = 0,
               digestStart = 0,
-              sumDuration = 0,
-              maxDuration = 0,
+              sumDigestMs = 0,
+              maxDigestMs = 0,
               dirtyChecks = 0;
-
-            // NOTE: This technique for timing the $digest cycles does
-            //       NOT capture time spent processing the asyncQueue!
 
             // $digest loop uses a reverse while.
             // Pushing onto the end of $$watchers array makes this run first...
             $rootScope.$$watchers.push({
+              eq: false,
+              last: null,
+              fn: function () {},
+              exp: function () {},
               get: function () {
                 dirtyChecks++;
-                // $log.debug('PERF: Dirty Checks:', dirtyChecks);
 
                 // Only update digestStart if not set. This allows for multiple
                 // iterations inside the "dirty loop."
+                //
+                // NOTE: This technique for timing the $digest cycles
+                //       DOES NOT capture time spent processing the asyncQueue!
                 if (digestStart === 0) {
+                  // $log.debug('$rootScope.$watch: digestStart');
                   digestStart = performance.now();
                   digestCycles++;
                 }
@@ -63,25 +128,51 @@ angular.module('angularcalendarApp')
                 $rootScope.$$postDigest(function () {
                   if (digestStart !== 0) {
                     var digestEnd = performance.now();
-                    var duration = (digestEnd - digestStart);
-                    angular.element($document[0].querySelector('#duration')).text(duration.toFixed(1));
-                    angular.element($document[0].querySelector('#digest-fps')).text((1000/duration).toFixed(0));
+                    var digestMs = (digestEnd - digestStart);
+                    _setText('#digest-ms', digestMs.toFixed(1));
+                    _setText('#digest-fps', (1000/digestMs).toFixed(0));
 
-                    maxDuration = Math.max(duration, maxDuration);
-                    angular.element($document[0].querySelector('#max-duration')).text(maxDuration.toFixed(1));
-                    angular.element($document[0].querySelector('#max-digest-fps')).text((1000/maxDuration).toFixed(0));
+                    maxDigestMs = Math.max(digestMs, maxDigestMs);
+                    _setText('#max-digest-ms', maxDigestMs.toFixed(1));
+                    _setText('#max-digest-fps', (1000/maxDigestMs).toFixed(0));
 
-                    sumDuration += duration;
+                    sumDigestMs += digestMs;
                     if (digestCycles > 0) {
-                      var avgDuration = sumDuration / digestCycles;
-                      angular.element($document[0].querySelector('#avg-duration')).text(avgDuration.toFixed(1));
-                      angular.element($document[0].querySelector('#avg-digest-fps')).text((1000/avgDuration).toFixed(0));
+                      var avgDigestMs = sumDigestMs / digestCycles;
+                      _setText('#avg-digest-ms', avgDigestMs.toFixed(1));
+                      _setText('#avg-digest-fps', (1000/avgDigestMs).toFixed(0));
                     }
 
-                    angular.element($document[0].querySelector('#dirtychecks')).text(dirtyChecks);
-                    angular.element($document[0].querySelector('#digest-cycles')).text(digestCycles);
+                    _setText('#dirty-checks', dirtyChecks);
+                    _setText('#digest-cycles', digestCycles);
 
-                    $log.debug('PERF: Digest Cycle', ('#'+digestCycles+':'), duration.toFixed(1), 'ms', ' [Overhead:', (performance.now() - digestEnd).toPrecision(3), 'ms]');
+                    var count = _countScopesWatchers();
+                    var scopes = count[0],
+                      watchers = count[1];
+
+                    _setText('#scopes', scopes);
+                    _setText('#watchers', watchers);
+
+                    var log = 'NG-PERF: Digest Cycle #' + digestCycles + ': ' + digestMs.toFixed(1) + ' ms, '+
+                      'Scopes: ' + scopes + ', Watchers: ' + watchers +
+                      ' [Overhead: ' + (performance.now() - digestEnd).toPrecision(3) + ' ms]';
+                    $log.debug(log);
+                    if ($window.console.timeStamp) {
+                      $window.console.timeStamp(log);
+                    }
+
+                    // Register an async function to run first.
+                    //
+                    // NOTE: This technique for timing the $digest cycles
+                    //       DOES capture time spent processing the asyncQueue!
+                    $rootScope.$$asyncQueue.unshift({
+                      scope: $rootScope,
+                      expression: function (scope) {
+                        // $log.debug('$rootScope.$evalAsync: digestStart');
+                        digestStart = performance.now();
+                        digestCycles++;
+                      }
+                    });
 
                     // Clear digestStart for next "dirty loop."
                     digestStart = 0;
@@ -89,49 +180,13 @@ angular.module('angularcalendarApp')
                 });
 
                 return null;
-              },
-              last: null,
-              fn: function () {},
-              exp: function () {},
-              eq: false
-            });
-
-            angular.element($document[0].querySelector('#headLoad')).text(stats.headLoad.toFixed(1));
-            angular.element($document[0].querySelector('#bodyLoad')).text(stats.bodyLoad.toFixed(1));
-            angular.element($document[0].querySelector('#footerLoad')).text(stats.footerLoad.toFixed(1));
-            angular.element($document[0].querySelector('#vendorScriptLoad')).text(stats.vendorScriptLoad.toFixed(1));
-            angular.element($document[0].querySelector('#appLoad')).text(stats.appLoad.toFixed(1));
-            angular.element($document[0].querySelector('#TTLB')).text(stats.TTLB.toFixed(1));
-            angular.element($document[0].querySelector('#time-to-angular')).text(stats.timeToAngular.toFixed(1));
-          }
-
-          var countWatchers = function () {
-            // var start = performance.now();
-            var ngScopes = [];
-
-            [].forEach.call(document.querySelectorAll('.ng-scope'), function (elem) {
-              var s = angular.element(elem).scope();
-              if (s) {
-                ngScopes.push({ id: s.$id, watchCount: (s.$$watchers ? (s.$$watchers.length || 0) : 0) });
               }
             });
-
-            var totalWatches = ngScopes.reduce(function (prev, cur) {
-              return (prev.watchCount || prev) + cur.watchCount;
-            });
-            totalWatches -= 1;  // Ignore our own watcher
-
-            angular.element($document[0].querySelector('#scopes')).text(ngScopes.length);
-            angular.element($document[0].querySelector('#watchers')).text(totalWatches);
-
-            // $log.debug('PERF: Scopes:', ngScopes.length, ', Watchers:', totalWatches, ' [Overhead:', (performance.now() - start).toPrecision(3), 'ms]');
-
-            // Update every second...
-            // Does not need to be $apply'd, so using setTimeout instead of $timeout
-            setTimeout(countWatchers, 1000);
-          };
-          countWatchers();
+          }
         }
       };
     }
   ]);
+
+})(angular);
+
