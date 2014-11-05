@@ -13,8 +13,6 @@ angular.module('angularcalendarApp')
         restrict: 'E',
         link: function(scope){
             scope.months = dateUtils.getVisibleMonths();
-            //scope.weeks = dateUtils.getVisibleWeeks(new Date());
-
             scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
         }
     };

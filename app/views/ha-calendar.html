@@ -3,7 +3,7 @@
     <table>
       <thead>
       <tr>
-        <th bindonce ng-repeat="day in weekdays" style="overflow: hidden">{{ day|date:"EEE" }}</th>
+        <th bindonce ng-repeat="day in weekdays" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
       </tr>
       </thead>
       <tbody>
@@ -17,7 +17,7 @@
   </li>
 </ol>
 
-<br><br>
+  <br>
 <p>
 <label for="deleteDay">Kill a day</label>
 <input ng-model="months[0].weeks[0][0]" id="deleteDay" />

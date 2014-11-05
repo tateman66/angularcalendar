@@ -28,7 +28,7 @@ angular.module('angularcalendarApp')
       stats.timeToAngular = (ngStart - stats.headStart);
 
       return {
-        restrict: 'A',
+        restrict: 'AE',
         replace: true,
         templateUrl: 'views/performance-stats.html',
         link: function (/* scope, elem, attrs */) {
