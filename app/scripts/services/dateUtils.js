@@ -10,7 +10,8 @@ angular.module('angularcalendarApp').factory('dateUtils', function(){
 
 			for (var i=0; i<12; i++){
 				months.push({
-                    weeks: this.getVisibleWeeks(new Date(currentYear, currentMonth, 1))
+                    weeks: this.getVisibleWeeks(new Date(currentYear, currentMonth, 1)),
+                    name: currentMonth
                 });
 
 				currentYear = (currentMonth > 11) ? currentYear + 1 : currentYear;

@@ -14,6 +14,15 @@ angular.module('angularcalendarApp')
         link: function(scope){
             scope.months = dateUtils.getVisibleMonths();
             scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
+            var limitToVal = 2;
+
+            scope.limitToValue = function(){
+                return limitToVal;
+            };
+
+            scope.increaseLimit = function(){
+                limitToVal+= 2;
+            };
         }
     };
 });
