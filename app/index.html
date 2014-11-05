@@ -17,9 +17,7 @@
   <!-- endbuild -->
 </head>
 <body ng-app="angularcalendarApp">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
+<div performance-stats></div>
 
 <!-- Add your site or application content here -->
 <div class="container">
@@ -35,19 +33,20 @@
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-bindonce/bindonce.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
 <!--Controllers-->
-<script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/ha-booking-widget.js"></script>
 <!--Directives-->
 <script src="scripts/directives/ha-calendar.js"></script>
 <!--Services-->
 <script src="scripts/services/dateUtils.js"></script>
 
+<script src="scripts/directives/performance-stats.js"></script>
 <!-- endbuild -->
 </body>
 </html>

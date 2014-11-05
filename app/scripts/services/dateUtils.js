@@ -31,7 +31,7 @@ angular.module('angularcalendarApp').factory('dateUtils', function(){
 			if (date.getDay() === 0) {
 				date.setDate(-5);
 			} else {
-				date.setDate(date.getDate() - (date.getDay() - 1));
+				date.setDate(date.getDate() - (date.getDay()));
 			}
 			if (date.getDate() === 1) {
 				date.setDate(-6);
@@ -53,7 +53,7 @@ angular.module('angularcalendarApp').factory('dateUtils', function(){
 		getDaysOfWeek : function(date) {
 			date = new Date(date || new Date());
 			date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-			date.setDate(date.getDate() - (date.getDay() - 1));
+			date.setDate(date.getDate() - (date.getDay()));
 			var days = [];
 			for (var i = 0; i < 7; i++) {
 				days.push(new Date(date));

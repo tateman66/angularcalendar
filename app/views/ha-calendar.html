@@ -1,20 +1,24 @@
 <ol class="list-unstyled list-inline">
-    <li ng-repeat="month in months  | limitTo: 2">
-        <table>
-            <thead>
-                <tr>
-                    <th ng-repeat="day in weekdays" style="overflow: hidden">{{ day|date:"EEE" }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="week in month.weeks">
-                    <td ng-repeat="day in week">
-                        <span
-                        ng-class="{'now':isNow(day),'active':isSameDay(day),'disabled':(day.getMonth()!=date.getMonth()),'after':isAfter(day),'before':isBefore(day)}"
-                        ng-click="setDate(day)" ng-bind="day.getDate()"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </li>
+  <li bindonce ng-repeat="month in months  | limitTo: 2">
+    <table>
+      <thead>
+      <tr>
+        <th bindonce ng-repeat="day in weekdays" style="overflow: hidden">{{ day|date:"EEE" }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr bindonce ng-repeat="week in month.weeks">
+        <td bindonce ng-repeat="day in week track by $index">
+          <span bo-text="day.getDate()"></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </li>
 </ol>
+
+<br><br>
+<p>
+<label for="deleteDay">Kill a day</label>
+<input ng-model="months[0].weeks[0][0]" id="deleteDay" />
+</p>
