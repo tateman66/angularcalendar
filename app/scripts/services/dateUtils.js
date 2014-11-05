@@ -4,18 +4,25 @@ angular.module('angularcalendarApp').factory('dateUtils', function(){
 	return {
 		getVisibleMonths : function(){
 			var today = new Date(),
-			currentMonth = today.getMonth(),
-			currentYear = today.getFullYear(),
-			months = [];
+    			currentMonth = today.getMonth(),
+    			currentYear = today.getFullYear(),
+    			months = [],
+                monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 			for (var i=0; i<12; i++){
-				months.push({
+
+                if (currentMonth === 12){
+                    currentMonth = 0;
+                    currentYear++;
+                }
+
+                months.push({
                     weeks: this.getVisibleWeeks(new Date(currentYear, currentMonth, 1)),
-                    name: currentMonth
+                    name: monthNames[currentMonth] + ' ' + currentYear
                 });
 
 				currentYear = (currentMonth > 11) ? currentYear + 1 : currentYear;
-				currentMonth = (currentMonth > 11) ? currentMonth-12 : ++currentMonth;
+                currentMonth = (currentMonth > 11) ? currentMonth-12 : ++currentMonth;
 			}
 
 			return months;

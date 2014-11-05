@@ -16,6 +16,9 @@
 .calendarWrap ha-calendar thead {
   color: #a6a9ab;
 }
+.calendarWrap ha-calendar thead h4 {
+  color: #333;
+}
 .calendarWrap ha-calendar th,
 .calendarWrap ha-calendar td {
   width: 14.2857%;

@@ -1,5 +1,5 @@
 <ol class="list-unstyled list-inline">
-    <li bindonce ng-repeat="month in months  | limitTo: 4 | limitTo: -2">
+    <li bindonce ng-repeat="month in months  | limitTo: limitIndex | limitTo: limitTrailer">
         <table>
             <thead>
                 <tr>
@@ -21,5 +21,6 @@
     </ol>
 
     <p>
-        <button ng-click="increaseLimit()">Up Limit</button>
+        <button ng-click="prev()" ng-disabled="limitIndex == 2">Prev</button>
+        <button ng-click="next()" ng-disabled="limitIndex == 12">Next</button>
     </p>

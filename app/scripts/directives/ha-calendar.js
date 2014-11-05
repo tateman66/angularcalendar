@@ -6,23 +6,28 @@
  * @description
  * # haCalendar
  */
-angular.module('angularcalendarApp')
-.directive('haCalendar', function (dateUtils) {
+ angular.module('angularcalendarApp')
+ .directive('haCalendar', function (dateUtils) {
     return {
         templateUrl: 'views/ha-calendar.html',
         restrict: 'E',
         link: function(scope){
             scope.months = dateUtils.getVisibleMonths();
             scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
-            var limitToVal = 2;
+            scope.limitIndex = 2;
+            scope.limitTrailer = 2;
 
-            scope.limitToValue = function(){
-                return limitToVal;
+            var monthsToDisplay = 2;
+
+            scope.next = function(){
+                scope.limitIndex++;
+                scope.limitTrailer = -1*monthsToDisplay;
             };
 
-            scope.increaseLimit = function(){
-                limitToVal+= 2;
+            scope.prev = function(){
+                scope.limitIndex--;
+                scope.limitTrailer = (scope.limitIndex !== monthsToDisplay) ? -1*monthsToDisplay : monthsToDisplay;
             };
         }
     };
-});
+ });
