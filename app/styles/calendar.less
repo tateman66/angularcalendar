@@ -1,11 +1,16 @@
 
 .calendarWrap { width: 100%; text-align: center;
     ha-calendar { display: inline-block; width: 100%;
-        ol { white-space: nowrap; }
-        > table { width: 100%; font-size: 12px; }
-        thead { color: #a6a9ab; }
-        thead h4 { color: #333; }
-        th, td { width: 14.2857%; text-align: center; }
-        td { padding: 14px; border: 1px solid #e0e0db; color: #b83292; font-weight: bold; }
+        ol { white-space: nowrap;
+            &.halfs li { width: 46%; margin-right: 4% }
+            &.halfs li:last-child { margin-right: 0; }
+
+            table { width: 100%; font-size: 12px; }
+            thead { color: #a6a9ab; }
+            thead h4 { color: #333; }
+            th, td { width: 14.2857%; text-align: center; }
+            td { padding: 14px 0; border: 1px solid #e0e0db; color: #b83292; font-weight: bold; }
+        }
+
     }
 }
