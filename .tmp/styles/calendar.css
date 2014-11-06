@@ -9,20 +9,30 @@
 .calendarWrap ha-calendar ol {
   white-space: nowrap;
 }
-.calendarWrap ha-calendar > table {
+.calendarWrap ha-calendar ol.halfs li {
+  width: 46%;
+  margin-right: 4%;
+}
+.calendarWrap ha-calendar ol.halfs li:last-child {
+  margin-right: 0;
+}
+.calendarWrap ha-calendar ol table {
   width: 100%;
   font-size: 12px;
 }
-.calendarWrap ha-calendar thead {
+.calendarWrap ha-calendar ol thead {
   color: #a6a9ab;
 }
-.calendarWrap ha-calendar th,
-.calendarWrap ha-calendar td {
+.calendarWrap ha-calendar ol thead h4 {
+  color: #333;
+}
+.calendarWrap ha-calendar ol th,
+.calendarWrap ha-calendar ol td {
   width: 14.2857%;
   text-align: center;
 }
-.calendarWrap ha-calendar td {
-  padding: 14px;
+.calendarWrap ha-calendar ol td {
+  padding: 14px 0;
   border: 1px solid #e0e0db;
   color: #b83292;
   font-weight: bold;

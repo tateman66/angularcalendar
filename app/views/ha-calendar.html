@@ -1,24 +1,26 @@
-<ol class="list-unstyled list-inline">
-  <li bindonce ng-repeat="month in months  | limitTo: 2">
-    <table>
-      <thead>
-      <tr>
-        <th bindonce ng-repeat="day in weekdays track by $index" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
-      </tr>
-      </thead>
-      <tbody>
-      <tr bindonce ng-repeat="week in month.weeks track by $index">
-        <td bindonce ng-repeat="day in week track by $index">
-          <span bo-text="day.getDate()"></span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </li>
-</ol>
+<ol class="list-unstyled list-inline halfs">
+    <li bindonce ng-repeat="month in months  | limitTo: limitIndex | limitTo: limitTrailer">
+        <table>
+            <thead>
+                <tr>
+                <th colspan="7"><h4>{{month.name}}</h4></th>
+                </tr>
+                <tr>
+                    <th bindonce ng-repeat="day in weekdays" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr bindonce ng-repeat="week in month.weeks">
+                        <td bindonce ng-repeat="day in week track by $index">
+                            <span bo-text="day.getDate()"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ol>
 
-  <br>
-<p>
-<label for="deleteDay">Kill a day</label>
-<input ng-model="months[0].weeks[0][0]" id="deleteDay" />
-</p>
+    <p>
+        <button ng-click="prev()" ng-disabled="limitIndex == 2">Prev</button>
+        <button ng-click="next()" ng-disabled="limitIndex == 12">Next</button>
+    </p>
