@@ -1,9 +1,12 @@
 
-.calendarWrap { width: 100%; text-align: center;
+.calendarWrap { width: 100%; padding: 0 1px; overflow: visible;
     ha-calendar { display: inline-block; width: 100%;
-        ol { white-space: nowrap;
-            &.halfs li { width: 46%; margin-right: 4% }
-            &.halfs li:last-child { margin-right: 0; }
+        ol { position: relative; left: 0%; white-space: nowrap;
+            &.animating { transition: left 0.4s ease-in-out; }
+
+            li { display: inline-block; }
+            &.halfs li { width: 48%; margin-left: 4% }
+            &.halfs li:first-child { margin-left: 0; }
 
             table { width: 100%; font-size: 12px; }
             thead { color: #a6a9ab; }

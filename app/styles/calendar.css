@@ -1,20 +1,29 @@
 .calendarWrap {
   width: 100%;
-  text-align: center;
+  padding: 0 1px;
+  overflow: visible;
 }
 .calendarWrap ha-calendar {
   display: inline-block;
   width: 100%;
 }
 .calendarWrap ha-calendar ol {
+  position: relative;
+  left: 0%;
   white-space: nowrap;
 }
-.calendarWrap ha-calendar ol.halfs li {
-  width: 46%;
-  margin-right: 4%;
+.calendarWrap ha-calendar ol.animating {
+  transition: left 0.4s ease-in-out;
 }
-.calendarWrap ha-calendar ol.halfs li:last-child {
-  margin-right: 0;
+.calendarWrap ha-calendar ol li {
+  display: inline-block;
+}
+.calendarWrap ha-calendar ol.halfs li {
+  width: 48%;
+  margin-left: 4%;
+}
+.calendarWrap ha-calendar ol.halfs li:first-child {
+  margin-left: 0;
 }
 .calendarWrap ha-calendar ol table {
   width: 100%;

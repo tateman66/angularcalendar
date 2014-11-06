@@ -1,4 +1,4 @@
-<ol class="list-unstyled list-inline halfs">
+<ol id="months" class="list-unstyled halfs" ng-class="{animating:animating}">
     <li bindonce ng-repeat="month in months  | limitTo: limitIndex | limitTo: limitTrailer">
         <table>
             <thead>
@@ -22,5 +22,10 @@
 
     <p>
         <button ng-click="prev()" ng-disabled="limitIndex == 2">Prev</button>
-        <button ng-click="next()" ng-disabled="limitIndex == 12">Next</button>
+        <button ng-click="next()" ng-disabled="limitIndex == 13">Next</button>
+    </p>
+
+    <p>
+        limitIndex: {{limitIndex}}<br />
+        limitTrailer: {{limitTrailer}}
     </p>
