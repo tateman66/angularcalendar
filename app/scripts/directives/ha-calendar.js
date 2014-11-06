@@ -7,64 +7,67 @@
  * # haCalendar
  */
  angular.module('angularcalendarApp')
- .directive('haCalendar', function (dateUtils) {
+ .directive('haCalendar', function (dateUtils, $timeout) {
     return {
         templateUrl: 'views/ha-calendar.html',
         restrict: 'E',
         link: function(scope){
-            scope.months = dateUtils.getVisibleMonths();
-            scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
-            scope.limitIndex = 2;
-            scope.limitTrailer = 2;
-            scope.animating = false;
 
             var monthsToDisplay = 2,
                 ol = document.getElementById('months'),
                 transitionEnd = transitionEnd();
 
+            scope.months = dateUtils.getVisibleMonths();
+            scope.weekdays = scope.weekdays || dateUtils.getDaysOfWeek();
+            scope.limitIndex = monthsToDisplay;
+            scope.limitTrailer = -1*monthsToDisplay;
+            scope.animating = false;
+
+            ol.addEventListener(transitionEnd, onTransitionEnd);
+
             scope.next = function(){
 
                 scope.limitIndex++;
-                scope.limitTrailer = -2;
+                scope.limitTrailer = -1*(monthsToDisplay+1);
 
                 scope.animating = true;
-                ol.style.left = '-52%';
+                ol.style.left = '-52%'; // make dynamic based on halfs
 
-                if (transitionEnd){
-                    ol.addEventListener(transitionEnd, onTransitionEnd);
-                } else {
+                if (!transitionEnd){
                     onTransitionEnd();
                 }
             };
 
             scope.prev = function(){
-                scope.limitIndex--;
-                scope.limitTrailer = scope.limitIndex;
 
-                scope.animating = true;
-                ol.style.left = '0%';
+                scope.limitTrailer = -1*(monthsToDisplay+1);
+                ol.style.left = '-52%';
 
-                if (transitionEnd){
-                    ol.addEventListener(transitionEnd, onTransitionEnd);
-                } else {
+
+                $timeout(function(){
+                    scope.animating = true;
+                    ol.style.left = '0%';
+                });
+
+                if (!transitionEnd){
                     onTransitionEnd();
                 }
             };
 
             scope.displayDay = function(d, f, l) {
-              if ((!(f && d.getDate() > 7)) && (!(l && d.getDate() < 14))) {
-                return d.getDate();
-              } else {
-                return '-';
-              }
+              return (!(f && d.getDate() > 7) && !(l && d.getDate() < 14)) ? d.getDate() : '-';
             };
 
             function onTransitionEnd(){
-                return;
                 scope.$apply(function(){
                     scope.animating = false;
                     scope.limitTrailer = -1*monthsToDisplay;
-                    ol.style.left = '0%';
+                    if (ol.style.left === '0%'){
+                        scope.limitIndex--;
+                    } else {
+                        ol.style.left = '0%';
+                    }
+
                 });
             }
 
@@ -84,7 +87,7 @@
                     }
                 }
 
-                return false; // explicit for ie8 (  ._.)
+                return false;
             }
         }
     };

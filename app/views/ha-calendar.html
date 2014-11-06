@@ -7,25 +7,21 @@
                 </tr>
                 <tr>
                     <th bindonce ng-repeat="day in weekdays" style="overflow: hidden"><span bo-text="day|date:'EEE'"></span>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr bindonce ng-repeat="week in month.weeks">
-                        <td bindonce ng-repeat="day in week track by $index">
-                            <span bo-text="displayDay(day, $parent.$first, $parent.$last)"></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </li>
-    </ol>
+                </tr>
+            </thead>
+            <tbody>
+                <tr bindonce ng-repeat="week in month.weeks">
+                    <td bindonce ng-repeat="day in week track by $index">
+                        <span bo-text="displayDay(day, $parent.$first, $parent.$last)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </li>
+</ol>
 
-    <p>
-        <button ng-click="prev()" ng-disabled="limitIndex == 2">Prev</button>
-        <button ng-click="next()" ng-disabled="limitIndex == 13">Next</button>
-    </p>
+<p>
+    <button ng-click="prev()" ng-disabled="limitIndex == 2">Prev</button>
+    <button ng-click="next()" ng-disabled="limitIndex == 12">Next</button>
+</p>
 
-    <p>
-        limitIndex: {{limitIndex}}<br />
-        limitTrailer: {{limitTrailer}}
-    </p>

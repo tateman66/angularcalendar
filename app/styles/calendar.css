@@ -2,6 +2,7 @@
   width: 100%;
   padding: 0 1px;
   overflow: hidden;
+  text-align: center;
 }
 .calendarWrap ha-calendar {
   display: inline-block;
