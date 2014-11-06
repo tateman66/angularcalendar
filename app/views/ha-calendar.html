@@ -12,7 +12,7 @@
                 <tbody>
                     <tr bindonce ng-repeat="week in month.weeks">
                         <td bindonce ng-repeat="day in week track by $index">
-                            <span bo-text="day.getDate()"></span>
+                            <span bo-text="displayDay(day, $parent.$first, $parent.$last)"></span>
                         </td>
                     </tr>
                 </tbody>
