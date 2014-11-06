@@ -51,7 +51,16 @@
                 }
             };
 
+            scope.displayDay = function(d, f, l) {
+              if ((!(f && d.getDate() > 7)) && (!(l && d.getDate() < 14))) {
+                return d.getDate();
+              } else {
+                return '-';
+              }
+            };
+
             function onTransitionEnd(){
+                return;
                 scope.$apply(function(){
                     scope.animating = false;
                     scope.limitTrailer = -1*monthsToDisplay;

@@ -1,7 +1,7 @@
 .calendarWrap {
   width: 100%;
   padding: 0 1px;
-  overflow: visible;
+  overflow: hidden;
 }
 .calendarWrap ha-calendar {
   display: inline-block;

@@ -10,7 +10,8 @@
  */
 angular.module('angularcalendarApp', [
   'ngRoute',
-  'pasvaz.bindonce'
+  'pasvaz.bindonce',
+  'performanceStatsModule'
 ])
   .config(function ($routeProvider) {
     $routeProvider
