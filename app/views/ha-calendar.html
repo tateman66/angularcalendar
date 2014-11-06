@@ -1,4 +1,4 @@
-<ol id="months" class="list-unstyled halfs" ng-class="{animating:animating}">
+<ol ng-swipe-left="next()" ng-swipe-right="prev()" id="months" class="list-unstyled halfs" ng-class="{animating:animating}">
     <li bindonce ng-repeat="month in months  | limitTo: limitIndex | limitTo: limitTrailer">
         <table>
             <thead>

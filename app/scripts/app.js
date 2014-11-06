@@ -11,7 +11,8 @@
 angular.module('angularcalendarApp', [
   'ngRoute',
   'pasvaz.bindonce',
-  'performanceStatsModule'
+  'performanceStatsModule',
+  'ngTouch'
 ])
   .config(function ($routeProvider) {
     $routeProvider
